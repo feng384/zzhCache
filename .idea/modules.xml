@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/zzhcache.iml" filepath="$PROJECT_DIR$/.idea/zzhcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/zzhsCache.iml" filepath="$PROJECT_DIR$/.idea/zzhsCache.iml" />
     </modules>
   </component>
 </project>
