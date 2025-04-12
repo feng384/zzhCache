@@ -27,7 +27,7 @@ var (
 	groups = map[string]*Group{}
 )
 
-func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
+func NewGroup(name string, maxCacheBytes int64, getter Getter) *Group {
 	if getter == nil {
 		panic("nil getter")
 	}
@@ -36,7 +36,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	g := &Group{
 		name:      name,
 		getter:    getter,
-		mainCache: cache{cacheBytes: cacheBytes},
+		mainCache: cache{maxCacheBytes: maxCacheBytes},
 	}
 	groups[name] = g
 	return g
