@@ -7,3 +7,5 @@
 /dataSources/
 /dataSources.local.xml
 /.name
+/dictionaries/project.xml
+/vcs.xml
