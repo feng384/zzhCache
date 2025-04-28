@@ -44,7 +44,7 @@ func startAPIServer(apiAddr string, zzh *zzhcache.Group) {
 		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Write(view.ByteSlice())
 	}))
-	log.Println("fontend is running at ", apiAddr)
+	log.Println("frontend is running at ", apiAddr)
 	log.Fatal(http.ListenAndServe(apiAddr[7:], nil))
 }
 
