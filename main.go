@@ -12,6 +12,9 @@ var db = map[string]string{
 	"Tom":  "630",
 	"Jack": "589",
 	"Sam":  "567",
+	"mzq":  "123",
+	"zw":   "66",
+	"frd":  "100",
 }
 
 func createGroup() *zzhcache.Group {
