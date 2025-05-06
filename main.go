@@ -29,27 +29,26 @@ func createGroup() *zzhcache.Group {
 }
 
 func startCacheServer(addr string, addrs []string, zzh *zzhcache.Group, protocol string) {
-	var peers zzhcache.PeerPicker
 	var err error
 
 	switch protocol {
 	case "http":
 		httpPeers := zzhcache.NewHTTPPool(addr)
 		httpPeers.Set(addrs...)
-		peers = httpPeers
+		zzh.RegisterPeers(httpPeers)
 		log.Println("zzhcache is running at ", addr)
 		err = http.ListenAndServe(addr[7:], httpPeers)
 	case "grpc":
 		grpcPeers := zzhcache.NewGRPCPool(addr)
 		grpcPeers.Set(addrs...)
-		peers = grpcPeers
+		zzh.RegisterPeers(grpcPeers)
 		log.Println("zzhcache is running at grpc", addr)
 		err = grpcPeers.Serve(addr)
 	default:
 		log.Fatalf("unsupported protocol: %s", protocol)
 	}
 
-	zzh.RegisterPeers(peers)
+	
 	if err != nil {
 		log.Fatal(err)
 	}
