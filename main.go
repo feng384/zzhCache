@@ -28,12 +28,30 @@ func createGroup() *zzhcache.Group {
 		}))
 }
 
-func startCacheServer(addr string, addrs []string, zzh *zzhcache.Group) {
-	peers := zzhcache.NewHTTPPool(addr)
-	peers.Set(addrs...)
-	zzh.RegisterPeers(peers)
-	log.Println("zzhcache is running at ", addr)
-	log.Fatal(http.ListenAndServe(addr[7:], peers))
+func startCacheServer(addr string, addrs []string, zzh *zzhcache.Group, protocol string) {
+	var err error
+
+	switch protocol {
+	case "http":
+		httpPeers := zzhcache.NewHTTPPool(addr)
+		httpPeers.Set(addrs...)
+		zzh.RegisterPeers(httpPeers)
+		log.Println("zzhcache is running at ", addr)
+		err = http.ListenAndServe(addr[7:], httpPeers)
+	case "grpc":
+		grpcPeers := zzhcache.NewGRPCPool(addr)
+		grpcPeers.Set(addrs...)
+		zzh.RegisterPeers(grpcPeers)
+		log.Println("zzhcache is running at grpc", addr)
+		err = grpcPeers.Serve(addr)
+	default:
+		log.Fatalf("unsupported protocol: %s", protocol)
+	}
+
+	
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func startAPIServer(apiAddr string, zzh *zzhcache.Group) {
@@ -52,17 +70,31 @@ func startAPIServer(apiAddr string, zzh *zzhcache.Group) {
 }
 
 func main() {
-	var port int
-	var api bool
+	var (
+		port     int
+		api      bool
+		protocol string
+	)
 	flag.IntVar(&port, "port", 8001, "zzhcache server port")
 	flag.BoolVar(&api, "api", false, "start api server?")
+	flag.StringVar(&protocol, "protocol", "http", "communication protocol (http|grpc)")
 	flag.Parse()
 
 	apiAddr := "http://localhost:9999"
-	addrMap := map[int]string{
-		8001: "http://localhost:8001",
-		8002: "http://localhost:8002",
-		8003: "http://localhost:8003",
+	// 根据协议选择不同的地址格式
+	var addrMap map[int]string
+	if protocol == "http" {
+		addrMap = map[int]string{
+			8001: "http://localhost:8001",
+			8002: "http://localhost:8002",
+			8003: "http://localhost:8003",
+		}
+	} else {
+		addrMap = map[int]string{
+			8001: "localhost:8001",
+			8002: "localhost:8002",
+			8003: "localhost:8003",
+		}
 	}
 
 	var addrs []string
@@ -74,6 +106,5 @@ func main() {
 	if api {
 		go startAPIServer(apiAddr, zzh)
 	}
-	startCacheServer(addrMap[port], addrs, zzh)
-
+	startCacheServer(addrMap[port], addrs, zzh, protocol)
 }

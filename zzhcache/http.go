@@ -15,7 +15,7 @@ import (
 
 const (
 	defaultBasePath = "/_zzhcache/"
-	defaultReplicas = 50
+	defaultReplicas = 500
 )
 
 // HTTPPool implements PeerPicker for a pool of HTTP peers.
