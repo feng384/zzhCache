@@ -5,8 +5,8 @@ PROTOCOL=${PROTOCOL:-http}  # Default to http if not set
 
 go build -o server
 ./server -port=8001 -protocol=$PROTOCOL &
-./server -port=8002 -protocol=$PROTOCOL &
-./server -port=8003 -api=1 -protocol=$PROTOCOL &
+./server -port=8002 -api=1 -protocol=$PROTOCOL &
+./server -port=8003 -protocol=$PROTOCOL &
 
 sleep 2
 echo ">>> start test"

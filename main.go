@@ -37,7 +37,7 @@ func startCacheServer(addr string, addrs []string, zzh *zzhcache.Group, protocol
 		httpPeers := zzhcache.NewHTTPPool(addr)
 		httpPeers.Set(addrs...)
 		peers = httpPeers
-		log.Println("zzhcache is running at http", addr)
+		log.Println("zzhcache is running at ", addr)
 		err = http.ListenAndServe(addr[7:], httpPeers)
 	case "grpc":
 		grpcPeers := zzhcache.NewGRPCPool(addr)
