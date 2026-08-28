@@ -1,3 +1,5 @@
+
+
 # zzhCache
 zzhCache - 一个基于Go的轻量级分布式缓存系统
 
@@ -53,6 +55,7 @@ curl "http://localhost:9999/api?key=Tom"
 |---------|----------------------|---------|
 | -port   | 服务端口号            | 8001    |
 | -api    | 是否启用API服务       | false   |
+| -protocol | 通信协议（http 或 grpc） | http    |
 
 示例：
 ```bash
